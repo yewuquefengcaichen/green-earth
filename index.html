@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!-- 设置文档字符编码为UTF-8，支持中文字符显示 -->
+    <meta charset="UTF-8">
+    <!-- 设置移动端视口，width=device-width表示视口宽度跟随设备宽度，initial-scale=1.0表示初始缩放比例为1 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 网站标题 -->
+    <title>绿色星球 - 环保教育与行动</title>
+    <!-- 引入Tailwind CSS框架，用于快速构建响应式界面 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- 引入Font Awesome图标库，提供丰富的图标选择 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <!-- 引入GSAP动画库，用于实现高性能的网页动画效果 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+    <!-- 引入思源黑体，优化中文显示效果 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS变量定义 - 用于全局颜色主题管理 */
+        :root {
+            --primary-color: #2c7744;    /* 主题绿色 - 用于重要元素和强调 */
+            --hover-color: #235c35;      /* 深绿色 - 用于悬停状态 */
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);    /* 背景渐变 - 创建柔和的视觉效果 */
+            --section-bg: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);  /* 区块背景 - 用于内容分区 */
+            --card-shadow: 0 10px 20px rgba(44, 119, 68, 0.1);  /* 卡片阴影 - 增加层次感 */
+            --text-primary: #2d3748;     /* 主要文字颜色 - 用于标题和重要文本 */
+            --text-secondary: #4a5568;   /* 次要文字颜色 - 用于正文和描述文本 */
+            --text-light: #718096;       /* 浅色文字 - 用于次要信息 */
+        }
+        
+        /* 页面基础样式设置 */
+        body {
+            background: var(--bg-gradient);  /* 设置渐变背景色 */
+            color: var(--text-primary);  /* 设置文字颜色 */
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;  /* 设置字体族，按优先级排列 */
+        }
+        
+        /* 导航栏滚动效果样式 */
+        .header-scroll {
+            transition: all 0.3s ease;  /* 添加过渡动画，使所有属性变化平滑 */
+            height: 80px;  /* 设置导航栏高度 */
+            display: flex;  /* 使用flex布局 */
+            align-items: center;  /* 垂直居中对齐内容 */
+        }
+        
+        /* 轮播图相关样式 */
+        .carousel {
+            position: relative;  /* 相对定位，作为子元素的定位参考 */
+            height: calc(100vh - 64px);  /* 轮播容器高度，减去导航栏高度 */
+            margin-top: 80px;  /* 顶部外边距，避免被导航栏遮挡 */
+            overflow: hidden;  /* 隐藏超出部分 */
+        }
+
+        /* 轮播项目样式 */
+        .carousel-item {
+            /* 轮播项目定位和过渡效果 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;  /* 默认透明 */
+            transition: opacity 1s ease;  /* 透明度过渡效果 */
+        }
+
+        /* 当前活动的轮播项目 */
+        .carousel-item.active {
+            opacity: 1;  /* 显示当前轮播项 */
+        }
+
+        /* 轮播图片样式 */
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;  /* 保持图片比例填充容器 */
+        }
+
+        /* 轮播遮罩层 - 增加文字可读性 */
+        .carousel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));  /* 半透明遮罩 */
+        }
+
+        /* 轮播内容样式 */
+        .carousel-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);  /* 居中定位 */
+            text-align: center;
+            color: white;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        /* 行动按钮样式 */
+        .action-button {
+            background-color: var(--primary-color);  /* 使用主题色 */
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 1.5rem;
+            transition: background-color 0.3s;  /* 背景色过渡效果 */
+        }
+
+        /* 行动按钮悬停效果 */
+        .action-button:hover {
+            background-color: #1f5c33;  /* 深色背景 */
+        }
+
+        /* 轮播指示器容器 */
+        .carousel-indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);  /* 水平居中 */
+            display: flex;
+            gap: 1rem;  /* 指示器之间的间距 */
+        }
+
+        /* 指示器样式 */
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;  /* 圆形指示器 */
+            background: rgba(255,255,255,0.5);  /* 半透明背景 */
+            cursor: pointer;  /* 鼠标指针样式 */
+        }
+
+        /* 当前活动指示器 */
+        .indicator.active {
+            background: white;  /* 纯白色背景 */
+        }
+
+        /* 卡片区域样式 */
+        .cards-section {
+            padding: 8rem 2rem;  /* 上下内边距较大，营造空间感 */
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;  /* 创建新的层叠上下文 */
+        }
+
+        /* 卡片区域背景图层 */
+        .cards-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
+                url('https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=2000');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;  /* 固定背景，创造视差效果 */
+            z-index: -1;
+        }
+
+        /* 卡片区域遮罩层 */
+        .cards-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                rgba(255, 255, 255, 0.9) 0%,
+                rgba(255, 255, 255, 0.7) 50%,
+                rgba(255, 255, 255, 0.9) 100%);  /* 渐变遮罩效果 */
+            backdrop-filter: blur(5px);  /* 背景模糊效果 */
+            z-index: -1;
+        }
+
+        /* 卡片容器样式 */
+        .cards-container {
+            max-width: 1200px;
+            margin: 0 auto;  /* 水平居中 */
+            position: relative;
+            z-index: 1;  /* 确保内容在遮罩层之上 */
+        }
+
+        /* 卡片区域标题样式 */
+        .cards-container h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);  /* 水平居中 */
+        }
+
+        /* 卡片区域标题装饰线 */
+        .cards-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        /* 卡片网格布局 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  /* 响应式网格布局 */
+            gap: 2.5rem;  /* 卡片之间的间距 */
+            margin-top: 3rem;
+            padding: 1rem;
+        }
+
+        /* 信息卡片样式 */
+        .info-card {
+            background: rgba(255, 255, 255, 0.6);  /* 半透明背景 */
+            backdrop-filter: blur(10px);  /* 玻璃态模糊效果 */
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);  /* 阴影效果 */
+            border: 1px solid rgba(255, 255, 255, 0.3);  /* 半透明边框 */
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);  /* 平滑过渡动画 */
+            transform: translateY(50px);  /* 初始位置偏移 */
+            opacity: 0;  /* 初始透明 */
+        }
+
+        /* 卡片可见状态 */
+        .info-card.visible {
+            transform: translateY(0);  /* 恢复正常位置 */
+            opacity: 1;  /* 显示卡片 */
+        }
+
+        /* 卡片图片容器 */
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 卡片图片样式 */
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;  /* 保持图片比例填充容器 */
+            transition: transform 0.3s;  /* 图片缩放过渡效果 */
+        }
+
+        /* 卡片悬停时图片效果 */
+        .info-card:hover .card-image img {
+            transform: scale(1.1);  /* 图片放大效果 */
+        }
+
+        /* 卡片内容区域 */
+        .card-content {
+            /* 内容区域样式和玻璃态效果 */
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.3);  /* 半透明背景 */
+            backdrop-filter: blur(5px);  /* 内容区域模糊效果 */
+            transform: translateZ(0);  /* 启用硬件加速 */
+            transition: transform 0.4s ease-out;  /* 过渡动画 */
+        }
+
+        /* 卡片悬停时内容区域效果 */
+        .info-card:hover .card-content {
+            transform: translateY(-5px);  /* 内容区域上浮效果 */
+        }
+
+        /* 卡片标题样式 */
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;  /* 使下划线宽度跟随文本 */
+        }
+
+        /* 卡片标题装饰线 */
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;  /* 初始宽度为0 */
+            height: 2px;
+            background: var(--primary-color);  /* 使用主题色 */
+            transition: width 0.3s ease;  /* 宽度过渡动画 */
+        }
+
+        /* 卡片悬停时标题装饰线效果 */
+        .info-card:hover .card-title::after {
+            width: 100%;  /* 展开下划线 */
+        }
+
+        /* 卡片文本样式 */
+        .card-text {
+            color: var(--text-primary);
+            line-height: 1.6;  /* 行高 */
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 1px rgba(255, 255, 255, 0.5);  /* 文字阴影提高可读性 */
+        }
+
+        /* 卡片链接样式 */
+        .info-card a {
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            position: relative;
+            overflow: hidden;  /* 隐藏溢出部分 */
+        }
+
+        /* 卡片链接下划线效果 */
+        .info-card a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: currentColor;  /* 使用当前文字颜色 */
+            transform: translateX(-100%);  /* 初始位置在左侧 */
+            transition: transform 0.3s ease;  /* 移动过渡动画 */
+        }
+
+        /* 卡片悬停时链接下划线效果 */
+        .info-card:hover a::before {
+            transform: translateX(0);
+        }
+
+        /* 导航链接基础样式 */
+        .nav-link {
+            position: relative;
+            color: #4a5568;  /* 默认颜色 */
+        }
+
+        /* 当前激活的导航链接 */
+        .nav-link.active {
+            color: var(--primary-color);  /* 使用主题色 */
+            background-color: #e8f5e9;  /* 浅绿色背景 */
+        }
+
+        /* 导航链接悬停效果 */
+        .nav-link:hover {
+            color: var(--primary-color);  /* 使用主题色 */
+        }
+
+        /* 导航链接下划线 */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;  /* 初始宽度为0 */
+            height: 2px;
+            background-color: var(--primary-color);  /* 使用主题色 */
+            transition: all 0.3s ease;  /* 过渡动画 */
+            transform: translateX(-50%);  /* 居中对齐 */
+        }
+
+        /* 导航链接悬停和激活时的下划线效果 */
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* 滚动时导航栏样式 */
+        .header-scroll.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);  /* 半透明背景 */
+            backdrop-filter: blur(8px);  /* 背景模糊效果 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  /* 添加阴影 */
+        }
+
+        /* 环保行动计划卡片悬停效果 */
+        .info-card {
+            transform: translateY(0);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card .card-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .info-card:hover .card-image::after {
+            opacity: 1;
+        }
+
+        .info-card .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-card:hover .card-title {
+            color: var(--primary-color);
+        }
+
+        .info-card .fa-arrow-right {
+            transform: translateX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover .fa-arrow-right {
+            transform: translateX(5px);
+        }
+
+        /* 添加进入动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+                backdrop-filter: blur(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                backdrop-filter: blur(0);
+            }
+        }
+
+        .cards-grid {
+            opacity: 0;
+            transition: opacity 1s ease-out;
+        }
+
+        .cards-grid.visible {
+            opacity: 1;
+        }
+
+        .cards-grid .info-card {
+            animation: fadeInUp 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+            opacity: 0;
+        }
+
+        .cards-grid .info-card:nth-child(1) { animation-delay: 0.2s; }
+        .cards-grid .info-card:nth-child(2) { animation-delay: 0.4s; }
+        .cards-grid .info-card:nth-child(3) { animation-delay: 0.6s; }
+        .cards-grid .info-card:nth-child(4) { animation-delay: 0.8s; }
+        .cards-grid .info-card:nth-child(5) { animation-delay: 1.0s; }
+        .cards-grid .info-card:nth-child(6) { animation-delay: 1.2s; }
+
+        /* 添加淡入时的模糊效果 */
+        .info-card {
+            filter: blur(10px);
+            transition: filter 1s ease-out;
+        }
+
+        .info-card.visible {
+            filter: blur(0);
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed top-0 w-full bg-white shadow-md z-50 header-scroll">
+        <nav class="container mx-auto px-8 py-5">
+            <ul class="flex justify-center items-center space-x-16">
+                <li>
+                    <a href="index.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-home mr-2"></i>首页
+                    </a>
+                </li>
+                <li>
+                    <a href="knowledge.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-book mr-2"></i>环保知识
+                    </a>
+                </li>
+                <li>
+                    <a href="action.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-hands-helping mr-2"></i>行动指南
+                    </a>
+                </li>
+                <li>
+                    <a href="about.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-users mr-2"></i>关于我们
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="carousel">
+        <div class="carousel-item active">
+            <img src="https://images.unsplash.com/photo-1470115636492-6d2b56f9146d" alt="环境保护" class="carousel-image">
+            <div class="carousel-overlay"></div>
+            <div class="carousel-content">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">共建绿色家园</h1>
+                <p class="text-xl mb-8">让我们携手保护地球，为下一代创造美好未来</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://images.unsplash.com/photo-1532601224476-15c79f2f7a51" alt="环保行动" class="carousel-image">
+            <div class="carousel-overlay"></div>
+            <div class="carousel-content">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">绿色环保行动</h1>
+                <p class="text-xl mb-8">文明健康 绿色环保 爱国卫生月活动</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e" alt="环境保护" class="carousel-image">
+            <div class="carousel-overlay"></div>
+            <div class="carousel-content">
+                <h1 class="text-4xl md:text-6xl font-bold mb-4">保护生态环境</h1>
+                <p class="text-xl mb-8">从你我做起，共创美好家园</p>
+            </div>
+        </div>
+        <div class="carousel-indicators">
+            <div class="indicator active"></div>
+            <div class="indicator"></div>
+            <div class="indicator"></div>
+        </div>
+    </div>
+
+    <section class="cards-section">
+        <div class="cards-container">
+            <h2 class="text-3xl font-bold text-center mb-8">环保行动计划</h2>
+            <div class="cards-grid">
+                <div class="info-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1604187351574-c75ca79f5807?auto=format&fit=crop&w=400" alt="垃圾分类">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">垃圾分类行动</h3>
+                        <p class="card-text">从日常生活做起，养成垃圾分类的好习惯。了解可回收物、厨余垃圾、有害垃圾的正确分类方法，共同维护清洁环境。</p>
+                        <a href="action.html#waste" class="mt-4 inline-block text-green-600 hover:text-green-700">
+                            了解更多 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=400" alt="植树造林">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">植树造林计划</h3>
+                        <p class="card-text">参与社区植树活动，为城市增添绿色。每一棵树都能吸收二氧化碳，释放氧气，改善空气质量，创造更宜居的环境。</p>
+                        <a href="action.html#tree" class="mt-4 inline-block text-green-600 hover:text-green-700">
+                            参与行动 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?auto=format&fit=crop&w=400" alt="节能减排">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">节能减排活动</h3>
+                        <p class="card-text">推广使用节能产品，降低能源消耗。从选择节能电器、合理使用空调、减少一次性用品开始，为地球降温尽一份力。</p>
+                        <a href="action.html#energy" class="mt-4 inline-block text-green-600 hover:text-green-700">
+                            查看指南 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1535083783855-76ae62b2914e?auto=format&fit=crop&w=400" alt="生物多样性">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">生物多样性保护</h3>
+                        <p class="card-text">保护野生动植物，维护生态平衡。了解濒危物种现状，参与保护行动，守护地球生物多样性。</p>
+                        <a href="action.html#biodiversity" class="mt-4 inline-block text-green-600 hover:text-green-700">
+                            参与保护 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=400" alt="水资源保护">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">水资源保护</h3>
+                        <p class="card-text">珍惜每一滴水，践行节水行动。从日常生活做起，养成节水习惯，共同保护珍贵的水资源。</p>
+                        <a href="action.html#water" class="mt-4 inline-block text-green-600 hover:text-green-700">
+                            节水行动 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=400" alt="低碳出行">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">低碳出行</h3>
+                        <p class="card-text">选择绿色出行方式，减少碳足迹。步行、骑行、共交通，让城市更清洁，让空气更清新。</p>
+                        <a href="action.html#transport" class="mt-4 inline-block text-green-600 hover:text-green-700">
+                            绿色出行 <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 轮播功能
+        const items = document.querySelectorAll('.carousel-item');
+        const indicators = document.querySelectorAll('.indicator');
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            items.forEach(item => item.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            items[index].classList.add('active');
+            indicators[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % items.length;
+            showSlide(currentIndex);
+        }
+
+        // 每2秒自动切换
+        setInterval(nextSlide, 2000);
+
+        // 点击指示器切换轮播
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                currentIndex = index;
+                showSlide(currentIndex);
+            });
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+                header.style.backdropFilter = "blur(5px)";
+            } else {
+                header.style.backgroundColor = "white";
+                header.style.backdropFilter = "none";
+            }
+        });
+
+        // 添加滚动渐入效果
+        const cards = document.querySelectorAll('.info-card');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+    <script>
+        // 设置当前页面的激活状态
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    
+        // 滚动效果
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header-scroll');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+    <script>
+        // 添加滚动显示动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardsGrid = document.querySelector('.cards-grid');
+            const cards = document.querySelectorAll('.info-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '-50px'
+            });
+
+            observer.observe(cardsGrid);
+            cards.forEach(card => observer.observe(card));
+        });
+    </script>
+</body>
+</html>

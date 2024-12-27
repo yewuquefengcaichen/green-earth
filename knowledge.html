@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!-- 基础元数据设置 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>环保知识 - 绿色星球</title>
+
+    <!-- 外部资源引入 -->
+    <!-- Tailwind CSS - 用于快速构建响应式界面 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts - 引入中文字体和特殊字体，优化显示效果 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <!-- Font Awesome - 提供丰富的图标选择 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    
+    <style>
+        /* 全局变量定义 - 用于主题颜色和样式统一 */
+        :root {
+            --primary-color: #2c7744;    /* 主题绿色 - 用于主要元素 */
+            --hover-color: #235c35;      /* 悬停状态颜色 */
+            --bg-overlay: none;          /* 背景遮罩层 - 可动态调整透明度 */
+            --card-shadow: 0 10px 20px rgba(44, 119, 68, 0.1);  /* 卡片阴影效果 */
+            --text-primary: #2d3748;     /* 主要文字颜色 */
+            --text-secondary: #4a5568;   /* 次要文字颜色 */
+        }
+
+        /* 页面基础样式设置 */
+        body {
+            background: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&q=80') center/cover fixed;  /* 设置全屏背景图 */
+            font-family: 'Noto Sans SC', sans-serif;  /* 使用思源黑体 */
+            color: var(--text-primary);
+            position: relative;
+            min-height: 100vh;  /* 确保最小高度占满视口 */
+        }
+
+        /* 背景遮罩层 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-overlay);
+            z-index: 0;
+        }
+
+        /* 确保内容在遮罩层之上 */
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 内容区域样式 */
+        .content-wrapper {
+            padding-top: 80px;  /* 为固定导航栏留出空间 */
+        }
+
+        /* 知识页面顶部区域样式 */
+        .knowledge-hero {
+            height: 60vh;  /* 设置为视口高度的60% */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        /* 顶部内容区域样式 */
+        .hero-content {
+            max-width: 900px;
+            padding: 3rem;
+            z-index: 1;  /* 确保内容在背景之上 */
+            position: relative;
+        }
+
+        /* 主标题样式 */
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            font-family: 'ZCOOL XiaoWei', serif;  /* 使用站酷小薇字体 */
+            letter-spacing: 0.1em;  /* 增加字间距 */
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);  /* 添加文字阴影提高可读性 */
+            margin-bottom: 2rem;
+        }
+
+        /* 副标题样式 */
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: #f0f0f0;
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 筛选区域样式 */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.95);  /* 半透明背景 */
+            backdrop-filter: blur(10px);  /* 背景模糊效果 */
+            padding: 2rem;
+            margin-top: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);  /* 添加阴影 */
+            border: 1px solid rgba(255, 255, 255, 0.3);  /* 添加边框 */
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 2;  /* 确保在其他元素之上 */
+        }
+
+        /* 筛选容器样式 */
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* 搜索框容器样式 */
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 搜索框输入框样式 */
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3.2rem;  /* 左侧留出图标空间 */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        /* 搜索框图标样式 */
+        .search-box i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);  /* 垂直居中 */
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            pointer-events: none;  /* 图标不可点击 */
+        }
+
+        /* 筛选组样式 */
+        .filter-group {
+            display: flex;
+            gap: 1rem;  /* 元素间距 */
+            align-items: center;  /* 垂直居中对齐 */
+        }
+
+        /* 筛选下拉框样式 */
+        .filter-select {
+            padding: 0.8rem 2rem 0.8rem 1rem;  /* 内边距设置 */
+            border: 1px solid rgba(255, 255, 255, 0.3);  /* 半透明边框 */
+            background: rgba(255, 255, 255, 0.8);  /* 半透明背景 */
+            border-radius: 8px;  /* 圆角 */
+            font-size: 1rem;
+            min-width: 180px;  /* 最小宽度 */
+            appearance: none;  /* 移除默认下拉箭头 */
+            backdrop-filter: blur(5px);  /* 背景模糊效果 */
+        }
+
+        /* 视图切换按钮样式 */
+        .view-toggle button {
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            transition: all 0.3s ease;  /* 过渡动画 */
+        }
+
+        /* 激活状态的视图切换按钮 */
+        .view-toggle button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(30px);
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            max-height: 320px;
+        }
+
+        .article-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .article-image {
+            width: 35%;
+            min-width: 320px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .article-card:hover .article-image img {
+            transform: scale(1.1);
+        }
+
+        .article-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.4) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .article-card:hover .article-image::after {
+            opacity: 1;
+        }
+
+        .article-category {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(44, 119, 68, 0.2);
+        }
+
+        .article-content {
+            flex: 1;
+            padding: 2.5rem;
+            position: relative;
+            background: linear-gradient(to bottom,
+                rgba(255, 255, 255, 0.95),
+                rgba(255, 255, 255, 0.85)
+            );
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .article-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .article-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .article-card:hover .article-title::after {
+            width: 100px;
+        }
+
+        .article-excerpt {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: flex-start;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .article-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .article-meta i {
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .load-more {
+            display: block;
+            width: fit-content;
+            margin: 3rem auto;
+            padding: 1rem 3rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .load-more:hover {
+            background: var(--hover-color);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .article-card {
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-play-state: paused;
+        }
+
+        .article-card.visible {
+            animation-play-state: running;
+        }
+
+        /* 列表视图样式 */
+        .articles-list {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .articles-list .article-card {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .articles-list .article-image {
+            height: 100%;
+            min-height: 300px;
+        }
+
+        .articles-list .article-content {
+            display: flex;
+            flex-direction: column;  /* 垂直排列 */
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        /* 导航链接基础样式 */
+        .nav-link {
+            position: relative;
+            font-size: 1.125rem;
+            padding: 0.75rem 1.5rem;
+        }
+
+        /* 导航链接下划线效果 */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;  /* 初始宽度为0 */
+            height: 2px;
+            background: var(--primary-color);  /* 使用主题色 */
+            transition: all 0.3s ease;  /* 过渡动画 */
+            transform: translateX(-50%);  /* 水平居中 */
+        }
+
+        /* 导航链接悬停和激活状态 */
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;  /* 展开下划线 */
+        }
+
+        /* 导航栏滚动样式 */
+        .header-scroll {
+            height: 80px;
+            display: flex;
+            align-items: center;  /* 垂直居中 */
+            transition: all 0.3s ease;  /* 过渡动画 */
+        }
+
+        /* 滚动时导航栏样式 */
+        .header-scroll.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);  /* 半透明背景 */
+            backdrop-filter: blur(8px);  /* 背景模糊效果 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  /* 添加阴影 */
+        }
+
+        /* 导航容器样式 */
+        .container.mx-auto {
+            max-width: 1280px;
+            padding: 0 2rem;
+        }
+
+        /* 导航项间距调整 */
+        .space-x-16 > * + * {
+            margin-left: 4rem;
+        }
+
+        /* 调整导航链接的内距和过渡效果 */
+        .nav-link {
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        /* 调整图标大小和间距 */
+        .nav-link i {
+            font-size: 1.125rem;
+            margin-right: 0.75rem;
+        }
+
+        .search-box input:focus {
+            background: rgba(255, 255, 255, 0.95);  /* 加深背景色 */
+            border-color: var(--primary-color);  /* 使用主题色边框 */
+            outline: none;  /* 移除默认轮廓 */
+            box-shadow: 0 0 0 3px rgba(44, 119, 68, 0.1);  /* 添加焦点阴影 */
+        }
+
+        /* 筛选下拉框焦点状态 */
+        .filter-select:focus {
+            background: rgba(255, 255, 255, 0.95);  /* 加深背景色 */
+            border-color: var(--primary-color);  /* 使用主题色边框 */
+            outline: none;  /* 移除默认轮廓 */
+        }
+
+        /* 顶部区域遮罩效果 */
+        .knowledge-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.4) 50%,
+                rgba(0, 0, 0, 0.3) 100%);  /* 渐变遮罩 */
+        }
+
+        /* 移除所有可能的背景遮罩 */
+        .knowledge-hero::before,
+        .knowledge-hero::after,
+        .hero-content::before,
+        .hero-content::after {
+            display: none;
+        }
+
+        /* 响应式布局调整 */
+        @media (max-width: 768px) {
+            .article-card {
+                flex-direction: column;
+                max-height: none;
+            }
+
+            .article-image {
+                width: 100%;
+                height: 240px;
+                min-width: auto;
+            }
+
+            .article-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed top-0 w-full bg-white shadow-md z-50 header-scroll">
+        <nav class="container mx-auto px-8 py-5">
+            <ul class="flex justify-center items-center space-x-16">
+                <li>
+                    <a href="index.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-home mr-2"></i>首页
+                    </a>
+                </li>
+                <li>
+                    <a href="knowledge.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-book mr-2"></i>环保知识
+                    </a>
+                </li>
+                <li>
+                    <a href="action.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-hands-helping mr-2"></i>行动指南
+                    </a>
+                </li>
+                <li>
+                    <a href="about.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-users mr-2"></i>关于我们
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content-wrapper">
+        <section class="knowledge-hero">
+            <div class="hero-content">
+                <h1 class="hero-title">探索环境知识</h1>
+                <p class="hero-subtitle">让我们一起探索自然的奥秘，学习环保的智慧，<br>用知识和行动守护我们共同的绿色家园</p>
+    </div>
+        </section>
+
+        <section class="filter-section">
+            <div class="filter-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="搜索环保知识...">
+                </div>
+        <div class="filter-group">
+                    <select class="filter-select" id="category-filter">
+                        <option value="all">全部分类</option>
+                        <option value="climate">气候变化</option>
+                        <option value="ocean">海洋保护</option>
+                        <option value="energy">节能减排</option>
+                        <option value="biodiversity">生物多样性</option>
+                        <option value="waste">垃圾处理</option>
+            </select>
+                    <select class="filter-select" id="sort-filter">
+                        <option value="newest">最新发布</option>
+                        <option value="popular">最多阅读</option>
+                        <option value="comments">最多评论</option>
+            </select>
+        <div class="view-toggle">
+                        <button class="active" data-view="grid"><i class="fas fa-th-large"></i></button>
+                        <button data-view="list"><i class="fas fa-list"></i></button>
+            </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="articles-grid" id="articles-container">
+            <!-- 文章卡片将通过 JavaScript 动态生成 -->
+        </div>
+
+        <button class="load-more" id="load-more">
+            加载更多 <i class="fas fa-spinner fa-spin ml-2 hidden"></i>
+        </button>
+    </div>
+
+    <script>
+        // 文章数据
+        const articles = [
+            {
+                id: 1,
+                title: "全球变暖的影响与应对措施",
+                excerpt: "深入探讨全球变暖对生态系统、人类社会的影响，以及我们可以采取的具体应对措施从个人到企业，每人都能为减缓气候变化贡献力量。",
+                category: "climate",
+                image: "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce",
+                readTime: "10",
+                views: "2,345",
+                comments: "128",
+                date: "2024-03-19"
+            },
+            {
+                id: 2,
+                title: "海洋塑料污染治理方案",
+                excerpt: "探索海洋塑料污染的现状、危害及解决方案。了解塑料垃圾对海洋生态系统的影响，以及如何通过个人行动和社会参与来保护海洋环境。",
+                category: "ocean",
+                image: "https://images.unsplash.com/photo-1621451537084-482c73073a0f",
+                readTime: "8",
+                views: "1,892",
+                comments: "95",
+                date: "2024-03-18"
+            },
+            {
+                id: 3,
+                title: "可再生能源发展趋势分析",
+                excerpt: "分析太阳能、风能等可再生能源的发展现状和未来趋势。探讨能源转型方案，了解清洁能源如何改变我们的生活方式。",
+                category: "energy",
+                image: "https://images.unsplash.com/photo-1509391366360-2e959784a276",
+                readTime: "12",
+                views: "3,156",
+                comments: "156",
+                date: "2024-03-17"
+            },
+            {
+                id: 4,
+                title: "生物多样性保护动指南",
+                excerpt: "探讨生物多样性对地球生态系统的重要作用，了解濒危种现状，分享如何通过日常行动保护野生动植物及其栖息地。",
+                category: "biodiversity",
+                image: "https://images.unsplash.com/photo-1535083783855-76ae62b2914e",
+                readTime: "15",
+                views: "1,756",
+                comments: "82",
+                date: "2024-03-16"
+            },
+            {
+                id: 5,
+                title: "城市垃圾分类完全指南",
+                excerpt: "详解垃圾分类的正确方法，探讨如何通过回收利用减少废弃物。从源头减量到终端处理，建立完整的垃圾处理认知。",
+                category: "waste",
+                image: "https://images.unsplash.com/photo-1604187351574-c75ca79f5807",
+                readTime: "8",
+                views: "2,567",
+                comments: "143",
+                date: "2024-03-15"
+            },
+            {
+                id: 6,
+                title: "极地冰川消融警示录",
+                excerpt: "记录全球变暖导致的极地冰川加速消融现象，分析其对全球气候和生态系统的影响，探讨减缓气候变化的可行措施和国际合作方案。",
+                category: "climate",
+                image: "https://images.unsplash.com/photo-1581056771107-24ca5f033842",
+                readTime: "13",
+                views: "4,287",
+                comments: "245",
+                date: "2024-03-14"
+            },
+            // ... 添加更多文章数据
+        ];
+
+        // 分类名称映射
+        function getCategoryName(category) {
+            const categoryMap = {
+                climate: '气候变化',
+                ocean: '海洋保护',
+                energy: '节能减排',
+                biodiversity: '生物多样性',
+                waste: '垃圾处理'
+            };
+            return categoryMap[category] || '其他';
+        }
+
+        // 初始化过滤器功能
+        function initializeFilters() {
+            const categoryFilter = document.getElementById('category-filter');
+            const sortFilter = document.getElementById('sort-filter');
+            const searchInput = document.querySelector('.search-box input');
+
+            function filterAndSortArticles() {
+                let filteredArticles = [...articles];
+                
+                // 分类过滤
+                const category = categoryFilter.value;
+                if (category !== 'all') {
+                    filteredArticles = filteredArticles.filter(article => article.category === category);
+                }
+
+                // 搜索过滤
+                const searchTerm = searchInput.value.toLowerCase();
+                if (searchTerm) {
+                    filteredArticles = filteredArticles.filter(article => 
+                        article.title.toLowerCase().includes(searchTerm) ||
+                        article.excerpt.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                // 排序
+                const sortBy = sortFilter.value;
+                filteredArticles.sort((a, b) => {
+                    switch (sortBy) {
+                        case 'newest':
+                            return new Date(b.date) - new Date(a.date);
+                        case 'popular':
+                            return parseInt(b.views.replace(',', '')) - parseInt(a.views.replace(',', ''));
+                        case 'comments':
+                            return parseInt(b.comments) - parseInt(a.comments);
+                        default:
+                            return 0;
+                    }
+                });
+
+                renderArticles(filteredArticles);
+            }
+
+            categoryFilter.addEventListener('change', filterAndSortArticles);
+            sortFilter.addEventListener('change', filterAndSortArticles);
+            searchInput.addEventListener('input', debounce(filterAndSortArticles, 300));
+        }
+
+        // 初始化视图切换功能
+        function initializeViewToggle() {
+            const container = document.getElementById('articles-container');
+            const viewButtons = document.querySelectorAll('.view-toggle button');
+
+            viewButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const view = button.dataset.view;
+                    viewButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    container.className = view === 'grid' ? 'articles-grid' : 'articles-list';
+                    observeArticles(); // 重新初始化动画
+                });
+            });
+        }
+
+        // 观察文章卡片动画
+        function observeArticles() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '50px'
+            });
+
+            document.querySelectorAll('.article-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // 抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // 加载更多功能
+        let currentPage = 1;
+        const itemsPerPage = 6;
+
+        document.getElementById('load-more').addEventListener('click', async function() {
+            const spinner = this.querySelector('.fa-spinner');
+            spinner.classList.remove('hidden');
+            
+            try {
+                // 模加载延迟
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                const start = currentPage * itemsPerPage;
+                const nextArticles = articles.slice(start, start + itemsPerPage);
+                
+                if (nextArticles.length > 0) {
+                    const container = document.getElementById('articles-container');
+                    const newArticles = nextArticles.map(article => `
+                        <article class="article-card" data-category="${article.category}">
+                            <div class="article-image">
+                                <img src="${article.image}" alt="${article.title}">
+                                <span class="article-category">${getCategoryName(article.category)}</span>
+            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">${article.title}</h3>
+                                <p class="article-excerpt">${article.excerpt}</p>
+                                <div class="article-meta">
+                                    <span><i class="far fa-clock"></i> ${article.readTime}分钟阅读</span>
+                                    <span><i class="far fa-eye"></i> ${article.views}</span>
+                                    <span><i class="far fa-comment"></i> ${article.comments}</span>
+                </div>
+            </div>
+        </article>
+                    `).join('');
+                    
+                    container.insertAdjacentHTML('beforeend', newArticles);
+                    currentPage++;
+                    observeArticles();
+                }
+                
+                if (start + itemsPerPage >= articles.length) {
+                    this.disabled = true;
+                    this.textContent = '没有更多内容';
+                }
+            } catch (error) {
+                console.error('加载失败:', error);
+            } finally {
+                spinner.classList.add('hidden');
+            }
+        });
+
+        // 渲染文章卡片
+        function renderArticles(articles) {
+            const container = document.getElementById('articles-container');
+            container.innerHTML = articles.map(article => `
+                <article class="article-card" data-category="${article.category}">
+                    <div class="article-image">
+                        <img src="${article.image}" alt="${article.title}">
+                        <span class="article-category">${getCategoryName(article.category)}</span>
+            </div>
+                    <div class="article-content">
+                        <h3 class="article-title">${article.title}</h3>
+                        <p class="article-excerpt">${article.excerpt}</p>
+                        <div class="article-meta">
+                            <span><i class="far fa-clock"></i> ${article.readTime}分钟阅读</span>
+                            <span><i class="far fa-eye"></i> ${article.views}</span>
+                            <span><i class="far fa-comment"></i> ${article.comments}</span>
+                </div>
+            </div>
+        </article>
+            `).join('');
+
+            // 观察文章卡片
+            observeArticles();
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            renderArticles(articles);
+            initializeFilters();
+            initializeViewToggle();
+        });
+
+        // 设置当前页面激活状态
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    
+        // 滚动效果
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header-scroll');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 移动端菜单切换
+        document.querySelector('.mobile-menu-button').addEventListener('click', () => {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

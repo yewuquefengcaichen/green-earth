@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行动指南 - 绿色星球</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    
+    <style>
+        /* 全局变量定义 - 用于主题颜色和样式统一 */
+        :root {
+            --primary-color: #2c7744;    /* 主题绿色 */
+            --hover-color: #235c35;      /* 悬停状态颜色 */
+            --text-primary: #2d3748;     /* 主要文字颜色 */
+            --text-secondary: #4a5568;   /* 次要文字颜色 */
+        }
+
+        /* 页面基础样式设置 */
+        body {
+            background: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&q=80') center/cover fixed;  /* 设置全屏背景图 */
+            font-family: 'Noto Sans SC', sans-serif;  /* 使用思源黑体 */
+            color: var(--text-primary);
+            min-height: 100vh;  /* 确保最小高度占满视口 */
+        }
+
+        /* 内容区域样式 */
+        .content-wrapper {
+            padding-top: 80px;  /* 为固定导航栏留出空间 */
+        }
+
+        /* 行动指南顶部区域样式 */
+        .action-hero {
+            height: 70vh;  /* 设置为视口高度的70% */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        /* 顶部内容区域样式 */
+        .hero-content {
+            max-width: 900px;
+            padding: 3rem;
+            z-index: 1;  /* 确保内容在背景之上 */
+        }
+
+        /* 主标题样式 */
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            font-family: 'ZCOOL XiaoWei', serif;  /* 使用站酷小薇字体 */
+            letter-spacing: 0.1em;  /* 增加字间距 */
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);  /* 添加文字阴影提高可读性 */
+            margin-bottom: 2rem;
+        }
+
+        /* 副标题样式 */
+        .hero-subtitle {
+            font-size: 1.8rem;
+            color: #f0f0f0;
+            font-family: 'ZCOOL XiaoWei', serif;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);  /* 添加文字阴影 */
+            line-height: 1.8;
+        }
+
+        /* 行动分类区域样式 */
+        .action-categories {
+            display: grid;
+            grid-template-columns: 1fr;  /* 单列布局 */
+            gap: 2rem;  /* 分类之间的间距 */
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 分类卡片样式 */
+        .category-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);  /* 半透明背景 */
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);  /* 添加阴影效果 */
+            transition: all 0.4s ease;  /* 添加过渡动画 */
+            position: relative;
+            backdrop-filter: blur(10px);  /* 背景模糊效果 */
+        }
+
+        /* 分类卡片悬停效果 */
+        .category-card:hover {
+            transform: translateY(-10px);  /* 上浮效果 */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);  /* 增强阴影 */
+        }
+
+        /* 分类标题区域样式 */
+        .category-header {
+            background: var(--primary-color);  /* 使用主题色背景 */
+            padding: 1.5rem 2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* 分类图标样式 */
+        .category-icon {
+            font-size: 2rem;  /* 图标大小 */
+        }
+
+        /* 分类标题文字样式 */
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'ZCOOL XiaoWei', serif;  /* 使用特殊字体 */
+        }
+
+        /* 行动列表容器样式 */
+        .action-list {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));  /* 响应式网格布局 */
+            gap: 1.5rem;  /* 网格间距 */
+        }
+
+        /* 行动项目卡片样式 */
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);  /* 淡色边框 */
+            background: rgba(255, 255, 255, 0.5);  /* 半透明背景 */
+            border-radius: 12px;
+            transition: all 0.3s ease;  /* 过渡动画 */
+            height: 100%;  /* 确保等高 */
+        }
+
+        /* 行动项目卡片悬停效果 */
+        .action-item:hover {
+            background: rgba(255, 255, 255, 0.8);  /* 增加背景不透明度 */
+            transform: translateY(-2px);  /* 轻微上浮 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);  /* 添加阴影 */
+        }
+
+        /* 行动序号样式 */
+        .action-number {
+            background: var(--primary-color);  /* 使用主题色背景 */
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;  /* 圆形 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* 行动内容区域样式 */
+        .action-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;  /* 内容间距 */
+        }
+
+        /* 行动标题样式 */
+        .action-content h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        /* 行动描述文本样式 */
+        .action-content p {
+            color: var(--text-secondary);  /* 次要文字颜色 */
+            line-height: 1.6;  /* 行高 */
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* 难度标签基础样式 */
+        .difficulty-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 简单难度标签样式 */
+        .difficulty-easy {
+            background: #e6ffed;  /* 浅绿色背景 */
+            color: #2c7744;  /* 深绿色文字 */
+        }
+
+        /* 中等难度标签样式 */
+        .difficulty-medium {
+            background: #fff7e6;  /* 浅橙色背景 */
+            color: #d46b08;  /* 深橙色文字 */
+        }
+
+        /* 较难难度标签样式 */
+        .difficulty-hard {
+            background: #fff1f0;  /* 浅红色背景 */
+            color: #cf1322;  /* 深红色文字 */
+        }
+
+        @media (max-width: 768px) {
+            .action-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 导航栏样式 */
+        .nav-link {
+            position: relative;
+            color: var(--text-secondary);  /* 使用次要文字颜色 */
+            transition: color 0.3s ease;  /* 颜色过渡动画 */
+        }
+
+        /* 导航链接悬停效果 */
+        .nav-link:hover {
+            color: var(--primary-color);  /* 使用主题色 */
+        }
+
+        /* 导航链接下划线效果 */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            width: 0;  /* 初始宽度为0 */
+            height: 2px;
+            background: var(--primary-color);  /* 使用主题色 */
+            transition: all 0.3s ease;  /* 过渡动画 */
+            transform: translateX(-50%);  /* 水平居中 */
+        }
+
+        .nav-link.active::after {
+            width: 80%;
+        }
+
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .header-scroll {
+            transition: all 0.3s ease;
+        }
+
+        .header-scroll.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏保持与其他页面一致 -->
+    <header class="fixed top-0 w-full bg-white shadow-md z-50 header-scroll">
+        <nav class="container mx-auto px-8 py-5">
+            <ul class="flex justify-center items-center space-x-16">
+                <li>
+                    <a href="index.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-home mr-2"></i>首页
+                    </a>
+                </li>
+                <li>
+                    <a href="knowledge.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-book mr-2"></i>环保知识
+                    </a>
+                </li>
+                <li>
+                    <a href="action.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-hands-helping mr-2"></i>行动指南
+                    </a>
+                </li>
+                <li>
+                    <a href="about.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                        <i class="fas fa-users mr-2"></i>关于我们
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content-wrapper">
+        <section class="action-hero">
+            <div class="hero-content">
+                <h1 class="hero-title">环保行动指南</h1>
+                <p class="hero-subtitle">从点滴做起，让环保融入生活的每一个细节<br>一起为地球未来贡献力量</p>
+            </div>
+        </section>
+
+        <section class="action-categories">
+            <!-- 日常生活类 -->
+            <div class="category-card">
+                <div class="category-header">
+                    <i class="fas fa-home category-icon"></i>
+                    <div>
+                        <h2 class="category-title">日常生活篇</h2>
+                        <p>从生活小事做起，践行环保理念</p>
+                    </div>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-number">1</span>
+                        <div class="action-content">
+                            <h3>垃圾分类投放</h3>
+                            <p>学习并严格执行垃圾分类，将可回收物、厨余垃圾、有害垃圾和其他垃圾分开处理。养成定期清理的好习惯，从源头减少垃圾产生。</p>
+                            <span class="difficulty-label difficulty-easy">容易实施</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">2</span>
+                        <div class="action-content">
+                            <h3>减少一次性用品</h3>
+                            <p>自带购物袋、水杯和餐具，拒绝使用一次性塑料袋、纸杯和餐具。选择可重复使用的产品，减少资源浪费。</p>
+                            <span class="difficulty-label difficulty-easy">容易实施</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">3</span>
+                        <div class="action-content">
+                            <h3>节约用水</h3>
+                            <p>修理漏水龙头，使用节水型马桶，收集雨水用于植物浇灌。洗菜、洗衣服的水可以回收用于拖地或冲厕所。</p>
+                            <span class="difficulty-label difficulty-medium">中等难度</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">4</span>
+                        <div class="action-content">
+                            <h3>环保清洁用品</h3>
+                            <p>使用天然清洁剂如醋、小苏打等替代化学清洁剂。选择可降解的环保清洁用品，减少对水体污染。</p>
+                            <span class="difficulty-label difficulty-medium">中等难度</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 节能减排类 -->
+            <div class="category-card">
+                <div class="category-header">
+                    <i class="fas fa-bolt category-icon"></i>
+                    <div>
+                        <h2 class="category-title">节能减排篇</h2>
+                        <p>减少能源消耗，降低碳排放</p>
+                    </div>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-number">1</span>
+                        <div class="action-content">
+                            <h3>智能用电管理</h3>
+                            <p>安装智能电表和座，监控用电情况。及时关闭不使用的电器，避免待机能耗。选用节能标识的家用电器。</p>
+                            <span class="difficulty-label difficulty-medium">中等难度</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">2</span>
+                        <div class="action-content">
+                            <h3>合理使用空调</h3>
+                            <p>夏季空调温度设置不低于26℃，冬季不高于20℃。使用遮阳帘和通风降温，减少空调使用时间。</p>
+                            <span class="difficulty-label difficulty-easy">容易实施</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">3</span>
+                        <div class="action-content">
+                            <h3>照明系统优化</h3>
+                            <p>更换为LED节能灯具，安装感应开关。充分利用自然光，合理布置照明系统，避免过度照明。</p>
+                            <span class="difficulty-label difficulty-hard">较难实施</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">4</span>
+                        <div class="action-content">
+                            <h3>使用可再生能源</h3>
+                            <p>安装太阳能热水器或光伏发电系统。选择使用风能、太阳能等清洁能源，减少化石能源消耗。</p>
+                            <span class="difficulty-label difficulty-hard">较难实施</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 绿色出行类 -->
+            <div class="category-card">
+                <div class="category-header">
+                    <i class="fas fa-bicycle category-icon"></i>
+                    <div>
+                        <h2 class="category-title">绿色出行篇</h2>
+                        <p>选择环保交通方式，减少碳足迹</p>
+                    </div>
+                </div>
+                <div class="action-list">
+                    <div class="action-item">
+                        <span class="action-number">1</span>
+                        <div class="action-content">
+                            <h3>公共交通优先</h3>
+                            <p>优先选择地铁、公交等公共交通工具。合理规划出行路线，避开拥堵时段，减少不必要的能源消耗。</p>
+                            <span class="difficulty-label difficulty-easy">容易实施</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">2</span>
+                        <div class="action-content">
+                            <h3>绿色出行计划</h3>
+                            <p>短距离（3公里以内）优先选择步行或骑行。参与共享单车计划，既环保又健康，还能减少交通拥堵。</p>
+                            <span class="difficulty-label difficulty-easy">容易实施</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">3</span>
+                        <div class="action-content">
+                            <h3>新能源汽车</h3>
+                            <p>购车时优先考虑新能源汽车。定期维护车辆，保持最佳工作状态，减少污染物排放。</p>
+                            <span class="difficulty-label difficulty-hard">较难实施</span>
+                        </div>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">4</span>
+                        <div class="action-content">
+                            <h3>拼车共享</h3>
+                            <p>参与拼车计划，与邻居同事共享车辆。使用拼车软件，提高车辆使用效率，减少碳排放。</p>
+                            <span class="difficulty-label difficulty-medium">中等难度</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header-scroll');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 设置当前页面激活状态
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

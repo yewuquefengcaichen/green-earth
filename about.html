@@ -1,39 +1,52 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>关于我们 - 绿色星球</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+XiaoWei&display=swap"
+        rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
-    
+
     <style>
         /* 全局变量定义 - 用于主题颜色和样式统一 */
         :root {
-            --primary-color: #3b7d9c;    /* 主题蓝色 */
-            --hover-color: #2c5f77;      /* 悬停状态颜色 */
-            --accent-color: #f4a261;     /* 强调色 */
-            --text-primary: #2d3748;     /* 主要文字颜色 */
-            --text-secondary: #4a5568;   /* 次要文字颜色 */
+            --primary-color: #3b7d9c;
+            /* 主题蓝色 */
+            --hover-color: #2c5f77;
+            /* 悬停状态颜色 */
+            --accent-color: #f4a261;
+            /* 强调色 */
+            --text-primary: #2d3748;
+            /* 主要文字颜色 */
+            --text-secondary: #4a5568;
+            /* 次要文字颜色 */
         }
 
         /* 页面基础样式设置 */
         body {
-            background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80') center/cover fixed;  /* 设置全屏背景图 */
-            font-family: 'Noto Sans SC', sans-serif;  /* 使用思源黑体 */
+            background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80') center/cover fixed;
+            /* 设置全屏背景图 */
+            font-family: 'Noto Sans SC', sans-serif;
+            /* 使用思源黑体 */
             color: var(--text-primary);
-            min-height: 100vh;  /* 确保最小高度占满视口 */
+            min-height: 100vh;
+            /* 确保最小高度占满视口 */
         }
 
         /* 内容区域样式 */
         .content-wrapper {
-            padding-top: 80px;  /* 为固定导航栏留出空间 */
+            padding-top: 80px;
+            /* 为固定导航栏留出空间 */
         }
 
         /* 关于我们顶部区域样式 */
         .about-hero {
-            height: 70vh;  /* 设置为视口高度的70% */
+            height: 70vh;
+            /* 设置为视口高度的70% */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -45,12 +58,17 @@
         .hero-content {
             max-width: 900px;
             padding: 3rem;
-            z-index: 1;  /* 确保内容在背景之上 */
+            z-index: 1;
+            /* 确保内容在背景之上 */
             position: relative;
-            background: none;  /* 移除背景 */
-            backdrop-filter: none;  /* 移除模糊效果 */
-            box-shadow: none;  /* 移除阴影 */
-            border: none;  /* 移除边框 */
+            background: none;
+            /* 移除背景 */
+            backdrop-filter: none;
+            /* 移除模糊效果 */
+            box-shadow: none;
+            /* 移除阴影 */
+            border: none;
+            /* 移除边框 */
         }
 
         /* 主标题样式 */
@@ -58,9 +76,12 @@
             font-size: 4.5rem;
             font-weight: 700;
             color: #ffffff;
-            font-family: 'ZCOOL XiaoWei', serif;  /* 使用站酷小薇字体 */
-            letter-spacing: 0.1em;  /* 增加字间距 */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);  /* 添加文字阴影提高可读性 */
+            font-family: 'ZCOOL XiaoWei', serif;
+            /* 使用站酷小薇字体 */
+            letter-spacing: 0.1em;
+            /* 增加字间距 */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            /* 添加文字阴影提高可读性 */
             margin-bottom: 2rem;
         }
 
@@ -72,7 +93,8 @@
             letter-spacing: 0.05em;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
             line-height: 1.8;
-            background: none;  /* 移除背景 */
+            background: none;
+            /* 移除背景 */
         }
 
         /* 关于我们内容区域样式 */
@@ -88,16 +110,21 @@
         /* 关于我们卡片样式 */
         .about-card {
             position: relative;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.1) 0%, 
-                rgba(255, 255, 255, 0.05) 100%);  /* 渐变背景 */
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0.05) 100%);
+            /* 渐变背景 */
             border-radius: 30px;
             overflow: hidden;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);  /* 添加阴影 */
-            backdrop-filter: blur(10px);  /* 背景模糊效果 */
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            /* 添加阴影 */
+            backdrop-filter: blur(10px);
+            /* 背景模糊效果 */
             color: white;
-            border: 1px solid rgba(255, 255, 255, 0.18);  /* 半透明边框 */
-            transition: all 0.4s ease-in-out;  /* 添加过渡动画 */
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            /* 半透明边框 */
+            transition: all 0.4s ease-in-out;
+            /* 添加过渡动画 */
         }
 
         /* 关于我们卡片悬停效果 */
@@ -122,7 +149,8 @@
             flex: 1;
             padding: 2rem;
             color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);  /* 文字阴影提高可读性 */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            /* 文字阴影提高可读性 */
         }
 
         /* 故事标题样式 */
@@ -130,8 +158,10 @@
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            font-family: 'ZCOOL XiaoWei', serif;  /* 使用特殊字体 */
-            color: var(--accent-color);  /* 使用强调色 */
+            font-family: 'ZCOOL XiaoWei', serif;
+            /* 使用特殊字体 */
+            color: var(--accent-color);
+            /* 使用强调色 */
         }
 
         /* 故事文本样式 */
@@ -142,9 +172,9 @@
         }
 
         .section-header {
-            background: linear-gradient(90deg, 
-                rgba(244, 162, 97, 0.2), 
-                transparent);
+            background: linear-gradient(90deg,
+                    rgba(244, 162, 97, 0.2),
+                    transparent);
             padding: 2rem;
             color: white;
             display: flex;
@@ -161,8 +191,8 @@
             width: 100%;
             height: 1px;
             background: linear-gradient(90deg,
-                rgba(255, 255, 255, 0.2),
-                transparent);
+                    rgba(255, 255, 255, 0.2),
+                    transparent);
         }
 
         .section-icon {
@@ -191,8 +221,8 @@
 
         .mission-item {
             background: linear-gradient(135deg,
-                rgba(255, 255, 255, 0.1),
-                rgba(255, 255, 255, 0.05));
+                    rgba(255, 255, 255, 0.1),
+                    rgba(255, 255, 255, 0.05));
             padding: 2rem;
             border-radius: 20px;
             text-align: center;
@@ -211,8 +241,8 @@
             width: 100%;
             height: 100%;
             background: radial-gradient(circle at top right,
-                rgba(244, 162, 97, 0.2),
-                transparent 70%);
+                    rgba(244, 162, 97, 0.2),
+                    transparent 70%);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -254,7 +284,7 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.3);
             margin-bottom: 0.5rem;
             min-height: 62.5px;
@@ -373,9 +403,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at top right, 
-                rgba(244, 162, 97, 0.2), 
-                transparent 70%);
+            background: radial-gradient(circle at top right,
+                    rgba(244, 162, 97, 0.2),
+                    transparent 70%);
             pointer-events: none;
         }
 
@@ -435,28 +465,33 @@
         }
     </style>
 </head>
+
 <body>
     <!-- 导航栏与其他页面保持一致 -->
     <header class="fixed top-0 w-full bg-white shadow-md z-50 header-scroll">
         <nav class="container mx-auto px-8 py-5">
             <ul class="flex justify-center items-center space-x-16">
                 <li>
-                    <a href="index.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                    <a href="index.html"
+                        class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
                         <i class="fas fa-home mr-2"></i>首页
                     </a>
                 </li>
                 <li>
-                    <a href="knowledge.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                    <a href="knowledge.html"
+                        class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
                         <i class="fas fa-book mr-2"></i>环保知识
                     </a>
                 </li>
                 <li>
-                    <a href="action.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                    <a href="action.html"
+                        class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
                         <i class="fas fa-hands-helping mr-2"></i>行动指南
                     </a>
                 </li>
                 <li>
-                    <a href="about.html" class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
+                    <a href="about.html"
+                        class="nav-link text-lg font-medium transition-all duration-300 py-2 px-4 rounded-lg hover:bg-green-50">
                         <i class="fas fa-users mr-2"></i>关于我们
                     </a>
                 </li>
@@ -507,7 +542,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="about-card mission">
                 <div class="section-header">
                     <i class="fas fa-bullseye section-icon"></i>
@@ -531,7 +566,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="about-card team">
                 <div class="section-header">
                     <i class="fas fa-user-friends section-icon"></i>
@@ -540,82 +575,13 @@
                 <div class="team-grid">
                     <div class="team-member">
                         <div class="member-image">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix&backgroundColor=b6e3f4" alt="李明">
+                            <img src="https://raw.githubusercontent.com/yewuquefengcaichen/image-hosting/main/1735296718434.png"
+                                alt="冯同学" style="object-fit: cover; width: 100%; height: 100%;">
                         </div>
                         <div class="member-info">
-                            <h3 class="member-name">李明</h3>
-                            <p class="member-role">创始人 & 总监</p>
-                            <p>环境科学博士，致力于环保教育和可持续发展研究</p>
-                            <div class="social-links">
-                                <a href="#"><i class="fab fa-weibo"></i></a>
-                                <a href="#"><i class="fab fa-weixin"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie&backgroundColor=ffdfbf" alt="张雨">
-                        </div>
-                        <div class="member-info">
-                            <h3 class="member-name">张雨</h3>
-                            <p class="member-role">项目总监</p>
-                            <p>环境工程硕士，专注于可持续发展项目管理</p>
-                            <div class="social-links">
-                                <a href="#"><i class="fab fa-weibo"></i></a>
-                                <a href="#"><i class="fab fa-weixin"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Max&backgroundColor=c1f4cd" alt="王阳">
-                        </div>
-                        <div class="member-info">
-                            <h3 class="member-name">王阳</h3>
-                            <p class="member-role">技术总监</p>
-                            <p>计算机科学硕士，负责平台技术开发与维护</p>
-                            <div class="social-links">
-                                <a href="#"><i class="fab fa-weibo"></i></a>
-                                <a href="#"><i class="fab fa-github"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Luna&backgroundColor=ffd5e5" alt="陈晓">
-                        </div>
-                        <div class="member-info">
-                            <h3 class="member-name">陈晓</h3>
-                            <p class="member-role">内容主</p>
-                            <p>环境传播学硕士，负责环保知识内容策划</p>
-                            <div class="social-links">
-                                <a href="#"><i class="fab fa-weibo"></i></a>
-                                <a href="#"><i class="fab fa-weixin"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Oliver&backgroundColor=d4c1f4" alt="林森">
-                        </div>
-                        <div class="member-info">
-                            <h3 class="member-name">林森</h3>
-                            <p class="member-role">活动策划</p>
-                            <p>公共管理硕士，负责环保活动策划与执行</p>
-                            <div class="social-links">
-                                <a href="#"><i class="fab fa-weibo"></i></a>
-                                <a href="#"><i class="fab fa-weixin"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-image">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Emma&backgroundColor=f4c1c1" alt="赵琳">
-                        </div>
-                        <div class="member-info">
-                            <h3 class="member-name">赵琳</h3>
-                            <p class="member-role">社区运营</p>
-                            <p>社会学硕士，负责社区建设与志愿者管理</p>
+                            <h3 class="member-name">不愿透露姓名的冯同学</h3>
+                            <p class="member-role">站长</p>
+                            <p>神秘的站长大大，负责网站的一切</p>
                             <div class="social-links">
                                 <a href="#"><i class="fab fa-weibo"></i></a>
                                 <a href="#"><i class="fab fa-weixin"></i></a>
@@ -624,7 +590,31 @@
                     </div>
                 </div>
             </div>
-            
+
+            <div class="about-card visitors">
+                <div class="section-header">
+                    <i class="fas fa-eye section-icon"></i>
+                    <h2 class="section-title">我们的访客</h2>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://raw.githubusercontent.com/yewuquefengcaichen/image-hosting/main/girl.jpg"
+                                alt="李同学" style="object-fit: cover; width: 100%; height: 100%;">
+                        </div>
+                        <div class="member-info">
+                            <h3 class="member-name">不敢点击网址的李同学</h3>
+                            <p class="member-role">可爱的访客</p>
+                            <p>胆小鬼一枚，但还是很可爱的访客呢～</p>
+                            <div class="social-links">
+                                <a href="#"><i class="fab fa-weibo"></i></a>
+                                <a href="#"><i class="fab fa-weixin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="about-card contact">
                 <div class="section-header">
                     <i class="fas fa-envelope section-icon"></i>
@@ -641,8 +631,9 @@
                     <div class="contact-item">
                         <i class="fas fa-envelope contact-icon"></i>
                         <div>
-                            <h3 class="font-semibold">邮箱</h3>
-                            <p>contact@greenplanet.org</p>
+                            <h3 class="font-semibold">📧 邮箱</h3>
+                            <p>风萧萧兮@163.com</p>
+                            <p class="text-sm italic mt-1">不是真的邮箱，但你可以试试，可能会收到风的回信哦 😉</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -672,7 +663,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             const navLinks = document.querySelectorAll('.nav-link');
-            
+
             navLinks.forEach(link => {
                 if (link.getAttribute('href') === currentPage) {
                     link.classList.add('active');
@@ -680,5 +671,99 @@
             });
         });
     </script>
+
+    <canvas id="fireworks" style="position: fixed; top: 0; left: 0; pointer-events: none; z-index: 999999;"></canvas>
+
+    <script>
+        // 添加烟花特效代码
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+
+        // 设置canvas尺寸
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        setCanvasSize();
+        window.addEventListener('resize', setCanvasSize);
+
+        // 烟花粒子类
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8,
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.alpha = 1;
+                this.friction = 0.95;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color}, ${this.alpha * 0.5})`;
+                ctx.fill();
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = `rgba(${this.color}, ${this.alpha * 0.3})`;
+            }
+
+            update() {
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= 0.005;
+            }
+        }
+
+        // 创建烟花
+        function createFirework(x, y) {
+            const particles = [];
+            const colors = [
+                '255, 182, 193',    // 粉红
+                '173, 216, 230',    // 淡蓝
+                '255, 218, 185',    // 桃色
+                '221, 160, 221',    // 梅红
+                '176, 224, 230',    // 粉蓝
+                '255, 255, 255'     // 白色
+            ];
+
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            for (let i = 0; i < 80; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+
+            return particles;
+        }
+
+        // 动画循环
+        let particles = [];
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles = particles.filter(particle => particle.alpha > 0);
+
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // 点击事件处理
+        document.addEventListener('click', (e) => {
+            const newParticles = createFirework(e.clientX, e.clientY);
+            particles.push(...newParticles);
+        });
+
+        // 启动动画
+        animate();
+    </script>
 </body>
+
 </html>

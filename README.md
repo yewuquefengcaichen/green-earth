@@ -70,15 +70,9 @@ npm start
 本项目基于 [MIT License](LICENSE) 开源，欢迎自由使用和改进。
 
 ---
+📧 邮箱：不是真的邮箱，但你可以试试 yewuque@163.com，可能会收到风的回信哦 😉
+🐙 提交 Issues：https://github.com/yewuquefengcaichen/green-earth/issues
 
-## 💬 联系我们
-
-如果您有任何问题、建议或合作意向，请通过以下方式联系：
-
-- 📧 邮箱：yewuque@163.com
-- 🐙 GitHub Issues：[https://github.com/yewuquefengcaichen/green-earth/issues](https://github.com/yewuquefengcaichen/green-earth/issues)
-
----
 
 ## 🌟 贡献指南
 
